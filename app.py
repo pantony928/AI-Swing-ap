@@ -35,7 +35,9 @@ def load_data():
     df["SPY_Low"] = data["Low"]["SPY"]
     df["QQQ_Close"] = data["Close"]["QQQ"]
     df["VIX_Close"] = data["Close"]["^VIX"]
-
+    cols = ["SPY_Open", "SPY_Close", "SPY_High", "SPY_Low", "QQQ_Close", "VIX_Close"]
+    df[cols] = df[cols].ffill()
+    df = df.dropna(subset=["SPY_Close"])
     df["VIX_MA10_Ratio"] = df["VIX_Close"] / df["VIX_Close"].rolling(10).mean()
     df["SPY_MA200_Ratio"] = df["SPY_Close"] / df["SPY_Close"].rolling(200).mean()
     df["QQQ_SPY_Ratio"] = df["QQQ_Close"] / df["SPY_Close"]
